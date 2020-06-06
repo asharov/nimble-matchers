@@ -1,7 +1,7 @@
 import XCTest
+import Quick
+@testable import AsharovNimbleMatchersTests
 
-import AsharovNimbleMatchersTests
-
-var tests = [XCTestCaseEntry]()
-tests += AsharovNimbleMatchersTests.allTests()
-XCTMain(tests)
+Quick.QCKMain([
+	AsharovNimbleMatchersTests.self,
+])
