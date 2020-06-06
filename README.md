@@ -1,5 +1,8 @@
 # Miscellaneous Nimble Matchers
 
+[![Build Status](https://travis-ci.com/asharov/nimble-matchers.svg?branch=master)](https://travis-ci.com/asharov/nimble-matchers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 I prefer to use [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble) for
 testing in my Swift projects. And sometimes I write my own matchers for Nimble when there is nothing
 suitable in the predefined matchers. This library collects some generally useful matchers I've written.
