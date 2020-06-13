@@ -1,6 +1,7 @@
 # Miscellaneous Nimble Matchers
 
 [![Build Status](https://travis-ci.com/asharov/nimble-matchers.svg?branch=master)](https://travis-ci.com/asharov/nimble-matchers)
+[![codecov](https://codecov.io/gh/asharov/nimble-matchers/branch/master/graph/badge.svg)](https://codecov.io/gh/asharov/nimble-matchers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 I prefer to use [Quick](https://github.com/Quick/Quick) and [Nimble](https://github.com/Quick/Nimble) for

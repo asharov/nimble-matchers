@@ -8,7 +8,10 @@ jobs:
       osx_image: xcode11.5
       language: swift
       script:
-        swift test
+        - swift test --enable-code-coverage
+      after_success:
+        - xcrun llvm-cov export -format=text .build/x86_64-apple-macosx/debug/AsharovNimbleMatchersPackageTests.xctest/Contents/MacOS/AsharovNimbleMatchersPackageTests -instr-profile=.build/x86_64-apple-macosx/debug/codecov/default.profdata >coverage.json
+        - bash <(curl -s https://codecov.io/bash) -f coverage.json
     - stage: Linux test
       os: linux
       language: generic
