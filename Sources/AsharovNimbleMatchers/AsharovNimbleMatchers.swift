@@ -14,7 +14,7 @@ public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Predicate
       try JSONSerialization.jsonObject(with: encodedData, options: .allowFragments) as! NSObject
     let message = ExpectationMessage.expectedCustomValueTo(
       "equal as JSON <\(String(data: initialData, encoding: .utf8)!)>",
-      String(data: encodedData, encoding: .utf8)!)
+      actual: String(data: encodedData, encoding: .utf8)!)
     return PredicateResult(bool: initialJson.isEqual(encodedJson), message: message)
   }
 }
@@ -27,7 +27,7 @@ public func roundTripThroughJson<T: Codable & Equatable>() -> Predicate<T> {
     let json = try JSONEncoder().encode(object)
     let decodedObject = try JSONDecoder().decode(T.self, from: json)
     let message = ExpectationMessage.expectedCustomValueTo(
-      "equal <\(String(describing: object))>", String(describing: decodedObject))
+      "equal <\(String(describing: object))>", actual: String(describing: decodedObject))
     return PredicateResult(bool: decodedObject == object, message: message)
   }
 }
