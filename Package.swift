@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
   name: "AsharovNimbleMatchers",
+  platforms: [
+    .macOS(.v10_15), .iOS(.v13), .tvOS(.v13)
+  ],
   products: [
     // Products define the executables and libraries produced by a package, and make them visible to other packages.
     .library(
@@ -14,8 +17,8 @@ let package = Package(
   dependencies: [
     // Dependencies declare other packages that this package depends on.
     // .package(url: /* package url */, from: "1.0.0"),
-    .package(url: "https://github.com/Quick/Nimble.git", from: "10.0.0"),
-    .package(url: "https://github.com/Quick/Quick.git", from: "4.0.0")
+    .package(url: "https://github.com/Quick/Nimble.git", from: "11.0.0"),
+    .package(url: "https://github.com/Quick/Quick.git", from: "6.0.0")
   ],
   targets: [
     // Targets are the basic building blocks of a package. A target can define a module or a test suite.
