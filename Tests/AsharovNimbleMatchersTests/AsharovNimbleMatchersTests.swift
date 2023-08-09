@@ -47,74 +47,74 @@ extension BrokenCustomType: Codable {
   }
 }
 
-final class AsharovNimbleMatchersTests: QuickSpec {
-  let testString = "String"
-  let testStringJson = "\"String\"".data(using: .utf8)!
-  let testInt = 12345
-  let testIntJson = "12345".data(using: .utf8)!
-  let testArray = [1, 2, 3, 4, 5]
-  let testArrayJson = "[1, 2, 3, 4, 5]".data(using: .utf8)!
-  let testDictionary = [
-    "key1": 1, "key2": 2, "keyNil": nil
-  ]
-  let testDictionaryJson = """
-  {
-    "key1": 1,
-    "key2": 2,
-    "key3": null
+let testString = "String"
+let testStringJson = "\"String\"".data(using: .utf8)!
+let testInt = 12345
+let testIntJson = "12345".data(using: .utf8)!
+let testArray = [1, 2, 3, 4, 5]
+let testArrayJson = "[1, 2, 3, 4, 5]".data(using: .utf8)!
+let testDictionary = [
+  "key1": 1, "key2": 2, "keyNil": nil
+]
+let testDictionaryJson = """
+{
+  "key1": 1,
+  "key2": 2,
+  "key3": null
+}
+""".data(using: .utf8)!
+let customValue = CustomType(outerValue: "Outer", innerValue: "Inner")
+let customValueJson = """
+{
+  "outer": "Outer",
+  "nested": {
+    "inner": "Inner"
   }
-  """.data(using: .utf8)!
-  let customValue = CustomType(outerValue: "Outer", innerValue: "Inner")
-  let customValueJson = """
-  {
-    "outer": "Outer",
-    "nested": {
-      "inner": "Inner"
-    }
-  }
-  """.data(using: .utf8)!
-  let brokenCustomValue = BrokenCustomType(value: "Broken")
-  let brokenCustomValueJson = "\"Broken\"".data(using: .utf8)!
+}
+""".data(using: .utf8)!
+let brokenCustomValue = BrokenCustomType(value: "Broken")
+let brokenCustomValueJson = "\"Broken\"".data(using: .utf8)!
 
-  override func spec() {
+final class AsharovNimbleMatchersTests: QuickSpec {
+  override class func spec() {
     describe("Encode-decode cycle") {
       it("should round-trip string") {
-        expect(self.testString).to(roundTripThroughJson())
+        expect(testString).to(roundTripThroughJson())
       }
       it("should round-trip int") {
-        expect(self.testInt).to(roundTripThroughJson())
+        expect(testInt).to(roundTripThroughJson())
       }
       it("should round-trip array") {
-        expect(self.testArray).to(roundTripThroughJson())
+        expect(testArray).to(roundTripThroughJson())
       }
       it("should round-trip dictionary") {
-        expect(self.testDictionary).to(roundTripThroughJson())
+        expect(testDictionary).to(roundTripThroughJson())
       }
       it("should round-trip custom type") {
-        expect(self.customValue).to(roundTripThroughJson())
+        expect(customValue).to(roundTripThroughJson())
       }
       it("should not round-trip when Codable implementation is incorrect") {
-        expect(self.brokenCustomValue).toNot(roundTripThroughJson())
+        expect(brokenCustomValue).toNot(roundTripThroughJson())
       }
     }
     describe("Decode-encode cycle") {
       it("should round-trip string") {
-        expect(self.testStringJson).to(roundTripFromJson(throughType: String.self))
+        expect(testStringJson).to(roundTripFromJson(throughType: String.self))
       }
       it("should round-trip int") {
-        expect(self.testIntJson).to(roundTripFromJson(throughType: Int.self))
+        expect(testIntJson).to(roundTripFromJson(throughType: Int.self))
       }
       it("should round-trip array") {
-        expect(self.testArrayJson).to(roundTripFromJson(throughType: Array<Int>.self))
+        expect(testArrayJson).to(roundTripFromJson(throughType: Array<Int>.self))
       }
       it("should round-trip dictionary") {
-        expect(self.testDictionaryJson).to(roundTripFromJson(throughType: Dictionary<String, Int?>.self))
+        expect(testDictionaryJson).to(roundTripFromJson(throughType: Dictionary<String, Int?>.self))
       }
       it("should round-trip custom type") {
-        expect(self.customValueJson).to(roundTripFromJson(throughType: CustomType.self))
+        expect(customValueJson).to(roundTripFromJson(throughType: CustomType.self))
       }
       it("should not round-trip when Codable implementation is incorrect") {
-        expect(self.brokenCustomValueJson).toNot(roundTripFromJson(throughType: BrokenCustomType.self))
+        expect(brokenCustomValueJson).toNot(roundTripFromJson(throughType: BrokenCustomType.self))
       }
     }
   }

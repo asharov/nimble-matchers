@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Quick/Nimble.git",
       "state" : {
-        "revision" : "b7f6c49acdb247e3158198c5448b38c3cc595533",
-        "version" : "11.2.1"
+        "revision" : "f552a16f434eef1f18b62985172489f41d37a18e",
+        "version" : "12.2.0"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Quick/Quick.git",
       "state" : {
-        "revision" : "16910e406be96e08923918315388c3e989deac9e",
-        "version" : "6.1.0"
+        "revision" : "494eff9ad74a37047782b0d5d8d84c7ff49a60e4",
+        "version" : "7.2.0"
       }
     }
   ],
