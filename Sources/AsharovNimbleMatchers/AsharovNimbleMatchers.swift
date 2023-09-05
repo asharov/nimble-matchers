@@ -1,7 +1,7 @@
 import Foundation
 import Nimble
 
-public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Predicate<Data> {
+public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Nimble.Predicate<Data> {
   return Predicate { (actualExpression: Expression<Data>) throws -> PredicateResult in
     guard let initialData = try actualExpression.evaluate() else {
       return PredicateResult(status: .fail, message: .fail("expected a non-<nil> Data"))
@@ -19,7 +19,7 @@ public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Predicate
   }
 }
 
-public func roundTripThroughJson<T: Codable & Equatable>() -> Predicate<T> {
+public func roundTripThroughJson<T: Codable & Equatable>() -> Nimble.Predicate<T> {
   return Predicate { (actualExpression: Expression<T>) throws -> PredicateResult in
     guard let object = try actualExpression.evaluate() else {
       return PredicateResult(status: .fail, message: .fail("expected a non-<nil> object"))
