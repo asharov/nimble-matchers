@@ -2,7 +2,7 @@ import Foundation
 import Nimble
 
 public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Matcher<Data> {
-  return Matcher { (actualExpression: Expression<Data>) throws -> MatcherResult in
+  return Matcher { (actualExpression: Nimble.Expression<Data>) throws -> MatcherResult in
     guard let initialData = try actualExpression.evaluate() else {
       return MatcherResult(status: .fail, message: .fail("expected a non-<nil> Data"))
     }
@@ -20,7 +20,7 @@ public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Matcher<D
 }
 
 public func roundTripThroughJson<T: Codable & Equatable>() -> Matcher<T> {
-  return Matcher { (actualExpression: Expression<T>) throws -> MatcherResult in
+  return Matcher { (actualExpression: Nimble.Expression<T>) throws -> MatcherResult in
     guard let object = try actualExpression.evaluate() else {
       return MatcherResult(status: .fail, message: .fail("expected a non-<nil> object"))
     }
