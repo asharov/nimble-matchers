@@ -1,13 +1,19 @@
 import Foundation
 import Nimble
 
-public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Matcher<Data> {
+public func roundTripFromJson<T: Codable>(throughType type: T.Type, userInfo: [CodingUserInfoKey: Any] = [:]) -> Matcher<Data> {
   return Matcher { (actualExpression: Nimble.Expression<Data>) throws -> MatcherResult in
     guard let initialData = try actualExpression.evaluate() else {
       return MatcherResult(status: .fail, message: .fail("expected a non-<nil> Data"))
     }
-    let object = try JSONDecoder().decode(type, from: initialData)
-    let encodedData = try JSONEncoder().encode(object)
+    let encoder = JSONEncoder()
+    let decoder = JSONDecoder()
+    for (key, value) in userInfo {
+      encoder.userInfo[key] = value
+      decoder.userInfo[key] = value
+    }
+    let object = try decoder.decode(type, from: initialData)
+    let encodedData = try encoder.encode(object)
     let initialJson =
       try JSONSerialization.jsonObject(with: initialData, options: .allowFragments) as! NSObject
     let encodedJson =
@@ -19,13 +25,19 @@ public func roundTripFromJson<T: Codable>(throughType type: T.Type) -> Matcher<D
   }
 }
 
-public func roundTripThroughJson<T: Codable & Equatable>() -> Matcher<T> {
+public func roundTripThroughJson<T: Codable & Equatable>(userInfo: [CodingUserInfoKey: Any] = [:]) -> Matcher<T> {
   return Matcher { (actualExpression: Nimble.Expression<T>) throws -> MatcherResult in
     guard let object = try actualExpression.evaluate() else {
       return MatcherResult(status: .fail, message: .fail("expected a non-<nil> object"))
     }
-    let json = try JSONEncoder().encode(object)
-    let decodedObject = try JSONDecoder().decode(T.self, from: json)
+    let encoder = JSONEncoder()
+    let decoder = JSONDecoder()
+    for (key, value) in userInfo {
+      encoder.userInfo[key] = value
+      decoder.userInfo[key] = value
+    }
+    let json = try encoder.encode(object)
+    let decodedObject = try decoder.decode(T.self, from: json)
     let message = ExpectationMessage.expectedCustomValueTo(
       "equal <\(String(describing: object))>", actual: String(describing: decodedObject))
     return MatcherResult(bool: decodedObject == object, message: message)

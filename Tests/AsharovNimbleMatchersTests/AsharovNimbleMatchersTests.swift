@@ -31,6 +31,36 @@ extension CustomType: Codable {
   }
 }
 
+struct UserInfoCustomType: Equatable {
+  static let mapping = ["Key": 123]
+
+  let key: String
+  let value: Int
+}
+
+extension CodingUserInfoKey {
+  static let mapping = CodingUserInfoKey(rawValue: "CustomTypeMapping")!
+}
+
+extension UserInfoCustomType: Codable {
+  enum CodingKeys: CodingKey {
+    case key
+    case value
+  }
+
+  init(from decoder: any Decoder) throws {
+    let mapping = decoder.userInfo[.mapping] as! [String: Int]
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    key = try container.decode(String.self, forKey: .key)
+    value = mapping[key]!
+  }
+
+  func encode(to encoder: any Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(self.key, forKey: .key)
+  }
+}
+
 struct BrokenCustomType: Equatable {
   let value: String
 }
@@ -72,6 +102,12 @@ let customValueJson = """
   }
 }
 """.data(using: .utf8)!
+let userInfoCustomValue = UserInfoCustomType(key: "Key", value: 123)
+let userInfoCustomValueJson = """
+{
+  "key": "Key"
+}
+""".data(using: .utf8)!
 let brokenCustomValue = BrokenCustomType(value: "Broken")
 let brokenCustomValueJson = "\"Broken\"".data(using: .utf8)!
 
@@ -93,6 +129,9 @@ final class AsharovNimbleMatchersTests: QuickSpec {
       it("should round-trip custom type") {
         expect(customValue).to(roundTripThroughJson())
       }
+      it("should round-trip custom type with user info") {
+        expect(userInfoCustomValue).to(roundTripThroughJson(userInfo: [.mapping: UserInfoCustomType.mapping]))
+      }
       it("should not round-trip when Codable implementation is incorrect") {
         expect(brokenCustomValue).toNot(roundTripThroughJson())
       }
@@ -112,6 +151,9 @@ final class AsharovNimbleMatchersTests: QuickSpec {
       }
       it("should round-trip custom type") {
         expect(customValueJson).to(roundTripFromJson(throughType: CustomType.self))
+      }
+      it("should round-trip custom type with user info") {
+        expect(userInfoCustomValueJson).to(roundTripFromJson(throughType: UserInfoCustomType.self, userInfo: [.mapping: UserInfoCustomType.mapping]))
       }
       it("should not round-trip when Codable implementation is incorrect") {
         expect(brokenCustomValueJson).toNot(roundTripFromJson(throughType: BrokenCustomType.self))
